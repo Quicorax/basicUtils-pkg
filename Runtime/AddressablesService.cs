@@ -17,6 +17,7 @@ namespace Quicorax
             _coroutiner.RunCoroutine(ardsAsset, () =>
             {
                 onAssetLoaded?.Invoke(ardsAsset.Result);
+                Debug.Log("Loaded");
             });
         }
     }
