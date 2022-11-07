@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 namespace Quicorax
 {
-    public interface IService { }
-
     public static class ServiceLocator
     {
         private static Dictionary<Type, IService> _services = new Dictionary<Type, IService>();
