@@ -1,0 +1,17 @@
+{
+  "name": "es.quicorax.utils",
+  "version": "1.0.0",
+  "displayName": "quicorax Utils",
+  "description": "Basic Utility tools",
+  "unity": "2021.3",
+  "unityRelease": "0f1",
+  "dependencies": { },
+ "keywords": [
+    "utils"
+  ],
+  "author": {
+    "name": "Quim Colobrans",
+    "email": "qcolobrans@gmail.com",
+    "url": "https://github.com/Quicorax/basicUtils-pkg"
+  } 
+}
