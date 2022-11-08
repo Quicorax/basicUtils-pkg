@@ -7,7 +7,7 @@ namespace Quicorax
 {
     public class LocalizationService : IService
     {
-        public event Action OnLanguageSet;
+        public event Action OnLanguageSet = delegate { };
         public LanguageDictionary CurrentLanguage { get; private set; }
 
         public Dictionary<string, LanguageDictionary> AvailableLanguages = new();
