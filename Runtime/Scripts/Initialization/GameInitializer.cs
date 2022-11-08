@@ -4,18 +4,18 @@ namespace Quicorax
 {
     public class GameInitializer : MonoBehaviour
     {
-        private CoroutinerService corroutiner;
+        private CoroutinerService _corroutiner;
 
         private void Start()
         {
-            corroutiner = GetComponentInChildren<CoroutinerService>();
+            _corroutiner = GetComponentInChildren<CoroutinerService>();
             LevelInitializer();
         }
 
         private void LevelInitializer()
         {
             ServiceLoader serviceLoader = new();
-            serviceLoader.LoadServices(corroutiner);
+            serviceLoader.LoadServices(_corroutiner);
         }
     }
 }

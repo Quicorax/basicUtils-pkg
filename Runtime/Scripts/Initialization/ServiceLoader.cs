@@ -1,3 +1,5 @@
+using System;
+
 namespace Quicorax
 {
     public class ServiceLoader
@@ -14,6 +16,7 @@ namespace Quicorax
             ServiceLocator.RegisterService(localization);
 
             addressables.Initialize(coroutiner);
+            localization.Initialize();
         }
     }
 }

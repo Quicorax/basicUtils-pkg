@@ -11,15 +11,16 @@ namespace Quicorax
 
         private TMP_Text _text;
 
-        [SerializeField]
-        private GenericEventBus _onLanguageSet;
+        private LocalizationService _localization;
 
         private void Awake()
         {
             _text = GetComponent<TMP_Text>();
-            _onLanguageSet.Event += NewLenguageSet;
+            _localization = ServiceLocator.GetService<LocalizationService>();
+
+            _localization.OnLanguageSet += TrySetTextByKey;
         }
-        private void OnDisable() => _onLanguageSet.Event -= NewLenguageSet;
+        private void OnDisable() => _localization.OnLanguageSet -= TrySetTextByKey;
 
         private void Start() => TrySetTextByKey();
 
@@ -28,9 +29,7 @@ namespace Quicorax
             if (Key != string.Empty)
                 SetLocalizableText(Key);
         }
-        private void NewLenguageSet() => TrySetTextByKey();
         public void SetLocalizableText(string textKey) =>
-            _text.text = ServiceLocator.GetService<LocalizationService>().
-            CurrentLanguage.Localize(textKey) ?? textKey;
+            _text.text = _localization.CurrentLanguage.Localize(textKey) ?? _text.text;
     }
 }
