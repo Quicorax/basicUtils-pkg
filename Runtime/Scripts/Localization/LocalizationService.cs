@@ -14,7 +14,7 @@ namespace Quicorax
 
         public void Initialize()
         {
-            foreach (LanguageDictionary language in Resources.LoadAll("Languages").OfType<LanguageDictionary>())
+            foreach (LanguageDictionary language in Resources.LoadAll("Localization").OfType<LanguageDictionary>())
             {
                 language.Initialize();
                 AvailableLanguages.Add(language.name, language);
