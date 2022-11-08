@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -11,13 +12,15 @@ namespace Quicorax
         public void Initialize(CoroutinerService coroutiner) =>
             _coroutiner = coroutiner;
 
-        public void LoadAdrsAsset(string adrsKey, Action<GameObject> onAssetLoaded)
+        public void LoadAdrsAsset(string adrsKey, Action<GameObject> onAssetLoaded) =>
+            _coroutiner.RunCoroutine(AssetLoded(adrsKey, onAssetLoaded));
+
+        private IEnumerator AssetLoded(string adrsKey, Action<GameObject> onAssetLoaded)
         {
             var ardsAsset = Addressables.LoadAssetAsync<GameObject>(adrsKey);
-            _coroutiner.RunCoroutine(ardsAsset, () =>
-            {
-                onAssetLoaded?.Invoke(ardsAsset.Result);
-            });
+            yield return ardsAsset;
+
+            onAssetLoaded?.Invoke(ardsAsset.Result);
         }
     }
 }
