@@ -4,24 +4,20 @@ using UnityEngine;
 
 namespace Quicorax
 {
-    public class CoroutinerService : MonoBehaviour, IService
+    public class CoroutinerService : IService
     {
-        public void RunCoroutine<T>(T delayer, Action onComplete) =>
-            StartCoroutine(EventCoroutineRunner(delayer, onComplete));
-        public void RunCoroutine(float delayer, Action onComplete) =>
-            StartCoroutine(NumericCoroutineRunner(delayer, onComplete));
-        public void RunCoroutine(int delayer, Action onComplete) =>
-            StartCoroutine(NumericCoroutineRunner(delayer, onComplete));
+        public class Runner : MonoBehaviour { }
 
-        private IEnumerator EventCoroutineRunner<T>(T delayer, Action onComplete)
+        private Runner _runner = null;
+
+        public void Initialize()
         {
-            yield return delayer;
-            onComplete?.Invoke();
+            _runner = new GameObject("Corroutiner").AddComponent<Runner>();
+            UnityEngine.Object.DontDestroyOnLoad(_runner.gameObject);
         }
-        private IEnumerator NumericCoroutineRunner(float delayer, Action onComplete)
-        {
-            yield return new WaitForSeconds(delayer);
-            onComplete?.Invoke();
-        }
+
+        public void RunCoroutine(IEnumerator corroutine) =>
+            _runner.StartCoroutine(corroutine);
+
     }
 }
