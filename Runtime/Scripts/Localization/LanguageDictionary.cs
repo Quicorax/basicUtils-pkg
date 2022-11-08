@@ -15,7 +15,7 @@ namespace Quicorax
         }
 
         [SerializeField]
-        private List<LocalizationEntry> data = new();
+        private List<LocalizationEntry> keys = new();
 
         [SerializeField]
         private TextAsset _textAsset;
@@ -23,6 +23,6 @@ namespace Quicorax
         public void Initialize() =>
             JsonUtility.FromJsonOverwrite(_textAsset.text, this);
 
-        public string Localize(string key) => data.Find(x => x.key == key)?.value ?? key;
+        public string Localize(string key) => keys.Find(x => x.key == key)?.value ?? key;
     }
 }
