@@ -20,13 +20,16 @@ namespace Quicorax
                 AvailableLanguages.Add(language.name, language);
             }
 
-            SetLenguage("English");
+            if (PlayerPrefs.GetString("Language") == string.Empty)
+                PlayerPrefs.SetString("Language", "English");
+
+            SetLanguage(PlayerPrefs.GetString("Language"));
         }
 
-        public void SetLenguage(string language)
+        public void SetLanguage(string language)
         {
             PlayerPrefs.SetString("Language", language);
-            CurrentLanguage = Resources.Load<LanguageDictionary>(language);
+            CurrentLanguage = AvailableLanguages[language];
             OnLanguageSet();
         }
 
