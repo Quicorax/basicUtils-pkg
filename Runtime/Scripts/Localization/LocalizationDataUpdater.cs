@@ -6,51 +6,46 @@ using UnityEngine.Networking;
 
 namespace Quicorax
 {
-    public static class LocalizationDataUpdater
+    public class LocalizationDataUpdater
     {
         [Serializable]
-        private class Language { public List<LanguageDictionary.LocalizationEntry> data; }
+        private class Language
+        {
+            public string language;
+            public List<LanguageDictionary.LocalizationEntry> keys;
+        }
 
         [Serializable]
-        private class Languages
-        {
-            public Language English;
-            public Language Spanish;
-            public Language Catalan;
-        }
+        private class Languages { public List<Language> data; }
 
         public static void UpdateLocalization(string url)
         {
+            Debug.Log("Updating Localization Data...");
+
             UnityWebRequest request = WebRequest(url);
             request.SendWebRequest().completed += operation =>
             {
                 if (request.error != null)
                 {
-                    Debug.Log(request.error);
+                    Debug.LogError(request.error);
                     return;
                 }
 
-                Debug.Log("Localization Data updated with -> " + request.downloadHandler.text);
+                Languages languages = JsonUtility.FromJson<Languages>(request.downloadHandler.text);             
 
-                Languages languages = JsonUtility.FromJson<Languages>(request.downloadHandler.text);
-
-                Dictionary<string, Language> availableLanguages = new()
+                foreach (Language specificLanguage in languages.data)
                 {
-                    { "English", languages.English},
-                    { "Spanish", languages.Spanish},
-                    { "Catalan", languages.Catalan}
-                };
-
-                foreach (var item in availableLanguages)
-                {
-                    System.IO.File.WriteAllText(Application.dataPath + "/Resources/"+ item.Key +"_file.json",
-                        JsonUtility.ToJson(item.Value));
+                    System.IO.File.WriteAllText(Application.dataPath + "/Resources/Localization/"+specificLanguage.language + "_data.json",
+                        JsonUtility.ToJson(specificLanguage));
                 }
-                
+
+                Debug.Log("Succesfully Updated Localization Data!");
+
                 AssetDatabase.Refresh();
             };
         }
 
         public static UnityWebRequest WebRequest(string url) => new(url, "GET", new DownloadHandlerBuffer(), null);
     }
+
 }
