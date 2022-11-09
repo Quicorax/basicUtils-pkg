@@ -14,13 +14,14 @@ namespace Quicorax
 
         public void LoadAdrsAsset(string adrsKey, Action<GameObject> onAssetLoaded) =>
             _coroutiner.RunCoroutine(AssetLoded(adrsKey, onAssetLoaded));
-
-        public void LoadAdrsOfComponent<T>(string key, Transform parent, Action<T> taskAction) =>
+        public void LoadAdrsAssetOfType<T>(string adrsKey, Action<T> onAssetLoaded) =>
+            _coroutiner.RunCoroutine(AssetLoded(adrsKey, onAssetLoaded));
+        public void InstanceAdrsOfComponent<T>(string key, Transform parent, Action<T> taskAction) =>
             _coroutiner.RunCoroutine(LoadAdrsOfComponentAsync(key, parent, taskAction));
 
-        private IEnumerator AssetLoded(string adrsKey, Action<GameObject> onAssetLoaded)
+        private IEnumerator AssetLoded<T>(string adrsKey, Action<T> onAssetLoaded)
         {
-            var ardsAsset = Addressables.LoadAssetAsync<GameObject>(adrsKey);
+            var ardsAsset = Addressables.LoadAssetAsync<T>(adrsKey);
             yield return ardsAsset;
 
             onAssetLoaded?.Invoke(ardsAsset.Result);
