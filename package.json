@@ -5,7 +5,10 @@
   "description": "Basic Utility tools",
   "unity": "2021.3",
   "unityRelease": "0f1",
-  "dependencies": { },
+  "dependencies": { 
+    "com.unity.addressables": "1.19.19",
+    "com.unity.textmeshpro": "3.0.6"
+  },
  "keywords": [
     "utils"
   ],
