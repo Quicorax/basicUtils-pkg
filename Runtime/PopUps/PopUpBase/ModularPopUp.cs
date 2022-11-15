@@ -16,8 +16,11 @@ namespace Quicorax
         private float _moduleSize;
         private float _baseWidht;
 
+        private AddressablesService _addressables;
+
         private void Awake()
         {
+            _addressables = ServiceLocator.GetService<AddressablesService>();
             _canvasGroup = GetComponent<CanvasGroup>();
 
             Transform body = transform.GetChild(1);
@@ -27,8 +30,7 @@ namespace Quicorax
         }
         public void GeneratePopUp(float baseWidht, IPopUpComponentData[] componentsToAdd)
         {
-            ServiceLocator.GetService<AddressablesService>().
-                LoadAdrsAssetOfType<Sprite>("BasePopUpImage", x => _image.sprite = x);
+            _addressables.LoadAdrsAssetOfType<Sprite>("BasePopUpImage", x => _image.sprite = x);
 
             _canvasGroup.alpha = 0;
             int currentModules = 0;
@@ -41,18 +43,15 @@ namespace Quicorax
                 _moduleSize += moduleData.ModuleHeight;
 
                 string adressableKey = "Module_" + moduleData.ModuleConcept;
-
-                ServiceLocator.GetService<AddressablesService>().
-                    InstanceAdrsOfComponent<IPopUpComponentObject>(adressableKey, _parent, component =>
-                {
-                    component.SetData(moduleData, CloseSelf);
-                    currentModules++;
-
-                    if (currentModules == componentsToAdd.Length)
+                _addressables.InstanceAdrsOfComponent<IPopUpComponentObject>(adressableKey, _parent, 
+                    component =>
                     {
-                        GenerationComplete();
-                    }
-                });
+                        component.SetData(moduleData, CloseSelf);
+                        currentModules++;
+
+                        if (currentModules == componentsToAdd.Length)
+                            GenerationComplete();
+                    });
             }
         }
         public void CloseSelf()
@@ -67,6 +66,7 @@ namespace Quicorax
 
             _parent.DOPunchScale(Vector3.one * 0.1f, .5f);
             _canvasGroup.DOFade(1, 0.3f);
+
             StartCoroutine(SetElementsOnDisposition());
         }
         IEnumerator SetElementsOnDisposition()
