@@ -57,15 +57,15 @@ namespace Quicorax
         public void CloseSelf()
         {
             _canvasGroup.interactable = false;
-            _canvasGroup.DOFade(0, 0.2f).OnComplete(() => Destroy(gameObject));
+            _canvasGroup.DOFade(0, 0.2f).OnComplete(() => Destroy(gameObject)).SetUpdate(true);
         }
 
         void GenerationComplete()
         {
             _parent.sizeDelta += new Vector2(_baseWidht, _moduleSize);
 
-            _parent.DOPunchScale(Vector3.one * 0.1f, .5f);
-            _canvasGroup.DOFade(1, 0.3f);
+            _parent.DOPunchScale(Vector3.one * 0.1f, .5f).SetUpdate(true);
+            _canvasGroup.DOFade(1, 0.3f).SetUpdate(true);
 
             StartCoroutine(SetElementsOnDisposition());
         }
