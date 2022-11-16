@@ -7,6 +7,9 @@ namespace Quicorax
     {
         public void NavigateToScene(string sceneName) =>
             SceneManager.LoadScene(sceneName);
+        
+        public void ReloadActualScene() =>
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
         public void ExitGame()
         {
